@@ -246,3 +246,5 @@ test_mae_score
 # Generating predictions on new data
 predictions = model.predict(test_data)
 predictions[0]
+
+model.save('house_price_model.keras')  
