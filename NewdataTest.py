@@ -12,15 +12,18 @@ model = load_model('./house_price_model.keras')
 # Load data 
 
 from tensorflow.keras.datasets import boston_housing
+
+mean = np.load('./mean.npy')
+std = np.load('./std.npy')
+
+# Load fresh data
 (train_data, train_targets), (test_data, test_targets) = boston_housing.load_data()
 
-# new_data = [
-#     1.23247, 0., 8.14, 0., 0.538, 6.142, 91.7,
-#      3.9769, 4., 307., 21., 396.9, 18.72
-# ]
-new_data = train_data[0]
-new_data = new_data.reshape(1, -1)
+# Get sample and normalize it
+new_data = test_data[0].reshape(1, -1)
+new_data_normalized = (new_data - mean) / std  # <-- NORMALIZE IT!
 
-
-prediction = model.predict(new_data)
-print(f"Predicted price: ${prediction[0][0]:.2f}")
+# Predict
+prediction = model.predict(new_data_normalized)
+print(f"Predicted price: ${prediction[0][0] * 1000:.2f}")  # Multiply by 1000!
+print(f"Expected price: ${test_targets[0] * 1000:.2f}")

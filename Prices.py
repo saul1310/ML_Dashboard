@@ -27,12 +27,11 @@ from tensorflow.keras import layers
 # Formula: z = (x - mean) / std, Prevents features with large values from dominating
 
 mean = train_data.mean(axis=0) # Calculate mean for each of the 13 features
+std = train_data.std(axis=0)
+
 train_data -= mean    # Subtract mean from training data
-std = train_data.std(axis=0)  # Calculate standard deviation for each feature
-train_data /= std  # Divide by standard deviation
-test_data -= mean #Use the SAME mean and std from training data on test data, because,
-# looking at the mean from the test data would be like peeking at info we wont have in production
-test_data /= std
+train_data = (train_data - mean) / std
+test_data = (test_data - mean) / std
 
 # What is standardization?
 # Formula: z = (x - mean) / std
@@ -248,3 +247,5 @@ predictions = model.predict(test_data)
 predictions[0]
 
 model.save('house_price_model.keras')  
+np.save('mean.npy', mean)
+np.save('std.npy', std)
