@@ -29,7 +29,7 @@ from tensorflow.keras import layers
 mean = train_data.mean(axis=0) # Calculate mean for each of the 13 features
 std = train_data.std(axis=0)
 
-train_data -= mean    # Subtract mean from training data
+# Normalize train and test data using z-score: (x - mean) / std
 train_data = (train_data - mean) / std
 test_data = (test_data - mean) / std
 
